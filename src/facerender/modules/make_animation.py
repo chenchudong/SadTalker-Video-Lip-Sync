@@ -117,19 +117,19 @@ def make_animation(source_image, source_semantics, target_semantics, generator, 
         '''
 
         #由于frame_num是音频长度，而source_image视频帧长度可能小于音频长度，所以此处做下视频的补帧处理
-        loopFrameIndex=0
-        source_image_len=len(source_image)
+        videoFrameIndex=0
+        source_video_len=len(source_image)
         for frame_idx in range(frame_num):
             #如果音频帧的长度超过视频帧长度，则补帧时，按顺序从头开始获取
-            if loopFrameIndex + 1 > source_image_len:
-                loopFrameIndex = 0
-            single_image = source_image[loopFrameIndex]
+            if videoFrameIndex + 1 > source_video_len:
+                videoFrameIndex = 0
+            single_image = source_image[videoFrameIndex]
             kp_single = kp_detector(single_image)
             kp_canonical.append(kp_single)
             he_source_single = mapping(source_semantics)
             kp_single = keypoint_transformation(kp_single, he_source_single)
             kp_source.append(kp_single)
-            loopFrameIndex+=1
+            videoFrameIndex+=1
 
         source_image_frame_idx = 0
         for frame_idx in tqdm(range(target_semantics.shape[1]), 'Face Renderer:'):

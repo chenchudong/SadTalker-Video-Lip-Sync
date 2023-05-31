@@ -37,10 +37,16 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
     tmp_path = str(uuid.uuid4()) + '.mp4'
     out_tmp = cv2.VideoWriter(tmp_path, cv2.VideoWriter_fourcc(*'MP4V'), fps, (frame_w, frame_h))
 
+    full_img_list_idx = 0
     for index, crop_frame in enumerate(tqdm(crop_frames, 'faceClone:')):
         p = cv2.resize(crop_frame.astype(np.uint8), (crx - clx, cry - cly))
 
-        ff = full_img_list[index].copy()
+        # 视频振长度由于小于音频帧，此处针对视频图像帧做循环补帧处理
+        if len(full_img_list) < full_img_list_idx + 1:
+            full_img_list_idx = 0
+        ff = full_img_list[full_img_list_idx].copy()
+        full_img_list_idx+=1
+
         ff[cly:cry, clx:crx] = p
         if enhancer_region == 'none':
             pp = ff
