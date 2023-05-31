@@ -131,7 +131,7 @@ def make_animation(source_image, source_semantics, target_semantics, generator, 
             kp_source.append(kp_single)
             loopFrameIndex+=1
 
-
+        source_image_frame_idx=0
         for frame_idx in tqdm(range(target_semantics.shape[1]), 'Face Renderer:'):
             if frame_idx >= frame_num:
                 break
@@ -139,7 +139,11 @@ def make_animation(source_image, source_semantics, target_semantics, generator, 
             he_driving = mapping(target_semantics_frame)
             kp_driving = keypoint_transformation(kp_canonical[frame_idx], he_driving)
             kp_norm = kp_driving
-            out = generator(source_image[frame_idx], kp_source=kp_source[frame_idx], kp_driving=kp_norm)
+            #跟上面补帧对应，循环补帧
+            if len(source_image) < frame_idx + 1:
+                source_image_frame_idx = 0
+            out = generator(source_image[source_image_frame_idx], kp_source=kp_source[frame_idx], kp_driving=kp_norm)
             predictions.append(out['prediction'])
+            source_image_frame_idx += 1
         predictions_ts = torch.stack(predictions, dim=1)
     return predictions_ts
