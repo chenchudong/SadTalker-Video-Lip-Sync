@@ -131,19 +131,6 @@ def make_animation(source_image, source_semantics, target_semantics, generator, 
             kp_source.append(kp_single)
             loopFrameIndex+=1
 
-        for single_image in source_image:
-            kp_single = kp_detector(single_image)
-            kp_canonical.append(kp_single)
-            he_source_single = mapping(source_semantics)
-            kp_single = keypoint_transformation(kp_single, he_source_single)
-            kp_source.append(kp_single)
-        if len(source_image) < frame_num:
-            kp_single = kp_detector(single_image)
-            kp_canonical.append(kp_single)
-            he_source_single = mapping(source_semantics)
-            kp_single = keypoint_transformation(kp_single, he_source_single)
-            kp_source.append(kp_single)
-
 
         for frame_idx in tqdm(range(target_semantics.shape[1]), 'Face Renderer:'):
             if frame_idx >= frame_num:
