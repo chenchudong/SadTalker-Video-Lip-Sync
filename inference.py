@@ -88,6 +88,8 @@ def main(args):
         save_path = return_path[:-4] + '_dain.mp4'
         command = r'ffmpeg -y -i "%s" -i "%s" -vcodec copy "%s"' % (temp_video_path, new_audio_path, save_path)
         os.system(command)
+
+    #删除临时视频文件
     os.remove(tmp_path)
 
 
