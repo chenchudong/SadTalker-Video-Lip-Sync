@@ -73,6 +73,7 @@ def main(args):
     coeff_path = audio_to_coeff.generate(batch, save_dir)
     # coeff2video
     data = get_facerender_data(coeff_path, crop_pic_path, first_coeff_path, audio_path, batch_size, device)
+    #视频合成
     tmp_path, new_audio_path, return_path = animate_from_coeff.generate(data, save_dir, pic_path, crop_info,
                                                                         restorer_model, enhancer_model, enhancer_region)
     torch.cuda.empty_cache()

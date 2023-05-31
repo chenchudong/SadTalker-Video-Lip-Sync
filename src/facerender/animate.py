@@ -114,15 +114,19 @@ class AnimateFromCoeff():
         return checkpoint['epoch']
 
     def generate(self, x, video_save_dir, pic_path, crop_info, restorer_model, enhancer_model, enhancer_region):
+        #视频帧
         source_image = x['source_image']
         source_semantics = x['source_semantics'].type(torch.FloatTensor)
         target_semantics = x['target_semantics_list'].type(torch.FloatTensor)
         source_semantics = source_semantics.to(self.device)
         target_semantics = target_semantics.to(self.device)
 
+        #音频帧数
         frame_num = x['frame_num']
-        if len(source_image) < frame_num:
-            frame_num = len(source_image)
+        # todo:注释最小时长的判断，以音频的时长为基准
+        #if len(source_image) < frame_num:
+        #    frame_num = len(source_image)
+        #根据音频长度和视频帧，预生成视频片段集合
         predictions_video = make_animation(source_image, source_semantics, target_semantics,
                                            self.generator, self.kp_extractor, self.mapping, frame_num)
 
