@@ -51,7 +51,6 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
         if enhancer_region == 'none':
             pp = ff
         else:
-            '''
             cropped_faces, restored_faces, restored_img = restorer.enhance(
                 ff, has_aligned=False, only_center_face=True, paste_back=True)
             if enhancer_region == 'lip':
@@ -73,6 +72,7 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
             mask = 255 * np.ones(p.shape, p.dtype)
             location = ((cly + cry) // 2, (cly + cry) // 2)
             pp = cv2.seamlessClone(p,  full_img_list[index], mask, location, cv2.NORMAL_CLONE)
+             '''
         out_tmp.write(pp)
     out_tmp.release()
     cmd = r'ffmpeg -y -i "%s" -i "%s" -vcodec copy "%s"' % (tmp_path, new_audio_path, full_video_path)
