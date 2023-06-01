@@ -13,6 +13,8 @@ from src.facerender.modules.make_animation import make_animation
 from pydub import AudioSegment
 from src.utils.paste_pic import paste_pic
 from src.utils.videoio import save_video_with_watermark
+from src.utils.face_enhancer import enhancer as face_enhancer
+
 
 warnings.filterwarnings('ignore')
 
@@ -171,6 +173,20 @@ class AnimateFromCoeff():
         tmp_path, new_audio_path = paste_pic(path, pic_path, crop_info, new_audio_path,
                                              full_video_path, restorer_model, enhancer_model,
                                              enhancer_region)
+
+        if enhancer_region:
+            video_name_enhancer = x['video_name'] + '_enhanced.mp4'
+            enhanced_path = os.path.join(video_save_dir, 'temp_' + video_name_enhancer)
+            av_path_enhancer = os.path.join(video_save_dir, video_name_enhancer)
+            #return_path = av_path_enhancer
+            enhanced_images = face_enhancer(full_video_path, method="gfpgan", bg_upsampler=None)
+
+            imageio.mimsave(enhanced_path, enhanced_images, fps=float(25))
+
+            save_video_with_watermark(enhanced_path, new_audio_path, av_path_enhancer, watermark=False)
+            print(f'The generated 【enhanced】 video is named {video_save_dir}/{video_name_enhancer}')
+            os.remove(enhanced_path)
+
         print(f'The generated video is named {video_save_dir}/{video_name_full}')
 
         return tmp_path, new_audio_path, return_path
