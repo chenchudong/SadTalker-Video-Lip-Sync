@@ -66,6 +66,9 @@ def enhancer(images, method='gfpgan', bg_upsampler='realesrgan'):
         # download pre-trained models from url
         model_path = url
 
+
+    print(f'enhancer model path={model_path}')
+
     restorer = GFPGANer(
         model_path=model_path,
         upscale=2,
