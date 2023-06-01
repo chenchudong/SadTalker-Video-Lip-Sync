@@ -69,8 +69,15 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
             pp = np.uint8(cv2.resize(np.clip(img, 0, 255), (width, height)))
             pp, orig_faces, enhanced_faces = enhancer.process(pp, full_img_list[index], bbox=[cly, cry, clx, crx],
                                                               face_enhance=False, possion_blending=True)
+                                                              
+                                                               mask = 255 * np.ones(p.shape, p.dtype)
+            location = ((cly + cry) // 2, (clx + crx) // 2)
+            gen_img = cv2.seamlessClone(p, full_img, mask, location, cv2.NORMAL_CLONE)
+            out_tmp.write(gen_img)
             '''
 
+
+            pp = ff
         out_tmp.write(pp)
     out_tmp.release()
     cmd = r'ffmpeg -y -i "%s" -i "%s" -vcodec copy "%s"' % (tmp_path, new_audio_path, full_video_path)
