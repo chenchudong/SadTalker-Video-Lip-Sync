@@ -47,8 +47,8 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
         ff = full_img_list[full_img_list_idx].copy()
         full_img_list_idx+=1
 
-        ff[cly:cry, clx:crx] = p
-        pp = ff
+        #ff[cly:cry, clx:crx] = p
+        #pp = ff
         '''
         if enhancer_region == 'none':
             pp = ff
@@ -77,6 +77,9 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
             location = ((clx + crx) // 2, (cly + cry) // 2)
             pp = cv2.seamlessClone(p,  full_img_list[index], mask, location, cv2.NORMAL_CLONE)
         '''
+        mask = 255 * np.ones(p.shape, p.dtype)
+        location = ((clx + crx) // 2, (cly + cry) // 2)
+        pp = cv2.seamlessClone(p, full_img_list[index], mask, location, cv2.NORMAL_CLONE)
         out_tmp.write(pp)
     out_tmp.release()
     cmd = r'ffmpeg -y -i "%s" -i "%s" -vcodec copy "%s"' % (tmp_path, new_audio_path, full_video_path)
