@@ -178,7 +178,7 @@ class AnimateFromCoeff():
             video_name_enhancer = x['video_name'] + '_enhanced.mp4'
             enhanced_path = os.path.join(video_save_dir, 'temp_' + video_name_enhancer)
             av_path_enhancer = os.path.join(video_save_dir, video_name_enhancer)
-            #return_path = av_path_enhancer
+            return_path = av_path_enhancer
             enhanced_images = face_enhancer(full_video_path, method="gfpgan", bg_upsampler=None)
 
             imageio.mimsave(enhanced_path, enhanced_images, fps=float(25))
