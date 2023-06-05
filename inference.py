@@ -18,6 +18,7 @@ def main(args):
     pic_path = args.source_video
     audio_path = args.driven_audio
     enhancer_region = args.enhancer
+    ref_eyeblink=args.ref_eyeblink
     save_dir = os.path.join(args.result_dir, strftime("%Y_%m_%d_%H.%M.%S"))
     os.makedirs(save_dir, exist_ok=True)
     device = args.device
@@ -68,8 +69,18 @@ def main(args):
     if first_coeff_path is None:
         print("Can't get the coeffs of the input")
         return
+
+    if ref_eyeblink is not None:
+        ref_eyeblink_videoname = os.path.splitext(os.path.split(ref_eyeblink)[-1])[0]
+        ref_eyeblink_frame_dir = os.path.join(save_dir, ref_eyeblink_videoname)
+        os.makedirs(ref_eyeblink_frame_dir, exist_ok=True)
+        print('3DMM Extraction for the reference video providing eye blinking')
+        ref_eyeblink_coeff_path, _, _ = preprocess_model.generate(ref_eyeblink, ref_eyeblink_frame_dir)
+    else:
+        ref_eyeblink_coeff_path = None
+
     # audio2ceoff
-    batch = get_data(first_coeff_path, audio_path, device)
+    batch = get_data(first_coeff_path, audio_path, device,ref_eyeblink_coeff_path)
     coeff_path = audio_to_coeff.generate(batch, save_dir)
     # coeff2video
     data = get_facerender_data(coeff_path, crop_pic_path, first_coeff_path, audio_path, batch_size, device)
@@ -100,6 +111,8 @@ if __name__ == '__main__':
                         help="path to driven audio")
     parser.add_argument("--source_video", default='./examples/source_image/input.mp4',
                         help="path to source video")
+    parser.add_argument("--ref_eyeblink", default=None, help="path to reference video providing eye blinking")
+
     parser.add_argument("--checkpoint_dir", default='./checkpoints', help="path to output")
     parser.add_argument("--result_dir", default='./results', help="path to output")
     parser.add_argument("--batch_size", type=int, default=1, help="the batch size of facerender")
