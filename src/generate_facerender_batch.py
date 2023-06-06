@@ -21,6 +21,7 @@ def get_facerender_data(coeff_path, pic_path, first_coeff_path, audio_path, batc
         source_image = img_as_float32(source_image)
         source_image = transform.resize(source_image, (256, 256, 3))
         source_image = source_image.transpose((2, 0, 1))
+        ##测试下输出的啥
         source_image_ts = torch.FloatTensor(source_image).unsqueeze(0)
         source_image_ts = source_image_ts.repeat(batch_size, 1, 1, 1)
         source_image_ts = source_image_ts.to(device)

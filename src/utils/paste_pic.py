@@ -76,9 +76,14 @@ def paste_pic(video_path, pic_path, crop_info, new_audio_path, full_video_path, 
             location = ((clx + crx) // 2, (cly + cry) // 2)
             pp = cv2.seamlessClone(p,  full_img_list[index], mask, location, cv2.NORMAL_CLONE)
         '''
+
         mask = 255 * np.ones(p.shape, p.dtype)
         location = ((clx + crx) // 2, (cly + cry) // 2)
         pp = cv2.seamlessClone(p, full_img_list[full_img_list_idx], mask, location, cv2.NORMAL_CLONE)
+
+        cropped_faces, restored_faces, restored_img = restorer.enhance(
+            pp, has_aligned=False, only_center_face=True, paste_back=True)
+        pp=restored_img
         out_tmp.write(pp)
         full_img_list_idx += 1
     out_tmp.release()
