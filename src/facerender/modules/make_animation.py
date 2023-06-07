@@ -3,7 +3,7 @@ import torch
 import torch.nn.functional as F
 import numpy as np
 from tqdm import tqdm
-
+import cv2,os,sys
 
 def normalize_kp(kp_source, kp_driving, kp_driving_initial, adapt_movement_scale=False,
                  use_relative_movement=False, use_relative_jacobian=False):
@@ -124,6 +124,15 @@ def make_animation(source_image, source_semantics, target_semantics, generator, 
             if videoFrameIndex + 1 > source_video_len:
                 videoFrameIndex = 0
             single_image = source_image[videoFrameIndex]
+            if videoFrameIndex <= 5:
+                # 将张量转换为NumPy数组
+                array = single_image.numpy()
+                current_code_path = sys.argv[0]
+                testSaveImageDir = os.path.join(current_code_path, 'testSaveAnimationImage')
+                os.makedirs(testSaveImageDir, exist_ok=True)
+                output_path = 'output_image.jpg'  # 替换为您希望保存的图像路径和文件名
+                testSaveImagePath = os.path.join(testSaveImageDir, output_path)
+                cv2.imwrite(testSaveImagePath, array)
             kp_single = kp_detector(single_image)
             kp_canonical.append(kp_single)
             he_source_single = mapping(source_semantics)

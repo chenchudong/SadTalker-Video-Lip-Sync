@@ -1,10 +1,11 @@
-import os
+import os, sys
 import numpy as np
 from PIL import Image
 from skimage import img_as_float32, transform
 import torch
 import scipy.io as scio
 from glob import glob
+import cv2
 
 
 def get_facerender_data(coeff_path, pic_path, first_coeff_path, audio_path, batch_size, device):
@@ -15,6 +16,7 @@ def get_facerender_data(coeff_path, pic_path, first_coeff_path, audio_path, batc
     data = {}
     images_list = sorted(glob(os.path.join(pic_path, '*.png')))
     source_image_ts_list = []
+    image_index=0
     for single in images_list:
         img1 = Image.open(single)
         source_image = np.array(img1)
@@ -25,6 +27,17 @@ def get_facerender_data(coeff_path, pic_path, first_coeff_path, audio_path, batc
         source_image_ts = torch.FloatTensor(source_image).unsqueeze(0)
         source_image_ts = source_image_ts.repeat(batch_size, 1, 1, 1)
         source_image_ts = source_image_ts.to(device)
+
+        if image_index <= 5:
+            # 将张量转换为NumPy数组
+            array = source_image_ts.numpy()
+            current_code_path = sys.argv[0]
+            testSaveImageDir = os.path.join(current_code_path, 'testSaveImage')
+            os.makedirs(testSaveImageDir, exist_ok=True)
+            output_path = 'output_image.jpg'  # 替换为您希望保存的图像路径和文件名
+            testSaveImagePath = os.path.join(testSaveImageDir, output_path)
+            cv2.imwrite(testSaveImagePath, array)
+        image_index+=1
         source_image_ts_list.append(source_image_ts)
     data['source_image'] = source_image_ts_list
 
