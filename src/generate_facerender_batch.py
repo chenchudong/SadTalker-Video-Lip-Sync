@@ -32,8 +32,7 @@ def get_facerender_data(coeff_path, pic_path, first_coeff_path, audio_path, batc
         if image_index <= 5:
             # 将张量转换为NumPy数组
             array = temp_source_image.numpy()
-            current_code_path = sys.argv[0]
-            testSaveImageDir = os.path.join(current_code_path, 'testSaveImage')
+            testSaveImageDir = os.path.join(os.getcwd() , 'testSaveImage')
             os.makedirs(testSaveImageDir, exist_ok=True)
             output_path = 'output_image.jpg'  # 替换为您希望保存的图像路径和文件名
             testSaveImagePath = os.path.join(testSaveImageDir, output_path)

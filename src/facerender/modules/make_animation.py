@@ -127,8 +127,7 @@ def make_animation(source_image, source_semantics, target_semantics, generator, 
             if videoFrameIndex <= 5:
                 # 将张量转换为NumPy数组
                 array = single_image.squeeze(0).cpu().numpy()
-                current_code_path = sys.argv[0]
-                testSaveImageDir = os.path.join(current_code_path, 'testSaveAnimationImage')
+                testSaveImageDir = os.path.join(os.getcwd(), 'testSaveAnimationImage')
                 os.makedirs(testSaveImageDir, exist_ok=True)
                 output_path = 'output_image.jpg'  # 替换为您希望保存的图像路径和文件名
                 testSaveImagePath = os.path.join(testSaveImageDir, output_path)
