@@ -124,6 +124,7 @@ def make_animation(source_image, source_semantics, target_semantics, generator, 
             if videoFrameIndex + 1 > source_video_len:
                 videoFrameIndex = 0
             single_image = source_image[videoFrameIndex]
+            '''
             if videoFrameIndex <= 5:
                 # 将张量转换为NumPy数组
                 array = single_image.squeeze(0).cpu().numpy()
@@ -132,6 +133,7 @@ def make_animation(source_image, source_semantics, target_semantics, generator, 
                 output_path = 'output_image.jpg'  # 替换为您希望保存的图像路径和文件名
                 testSaveImagePath = os.path.join(testSaveImageDir, output_path)
                 cv2.imwrite(testSaveImagePath, array)
+            '''
             kp_single = kp_detector(single_image)
             kp_canonical.append(kp_single)
             he_source_single = mapping(source_semantics)

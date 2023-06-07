@@ -28,7 +28,7 @@ def get_facerender_data(coeff_path, pic_path, first_coeff_path, audio_path, batc
         temp_source_image=source_image_ts
         source_image_ts = source_image_ts.repeat(batch_size, 1, 1, 1)
         source_image_ts = source_image_ts.to(device)
-
+        '''
         if image_index <= 5:
             # 将张量转换为NumPy数组
             array = temp_source_image.numpy()
@@ -38,6 +38,7 @@ def get_facerender_data(coeff_path, pic_path, first_coeff_path, audio_path, batc
             testSaveImagePath = os.path.join(testSaveImageDir, output_path)
             cv2.imwrite(testSaveImagePath, array)
         image_index+=1
+        '''
         source_image_ts_list.append(source_image_ts)
     data['source_image'] = source_image_ts_list
 
