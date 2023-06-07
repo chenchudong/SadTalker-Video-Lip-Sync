@@ -126,7 +126,7 @@ def make_animation(source_image, source_semantics, target_semantics, generator, 
             single_image = source_image[videoFrameIndex]
             if videoFrameIndex <= 5:
                 # 将张量转换为NumPy数组
-                array = single_image.numpy()
+                array = single_image.squeeze(0).cpu().numpy()
                 current_code_path = sys.argv[0]
                 testSaveImageDir = os.path.join(current_code_path, 'testSaveAnimationImage')
                 os.makedirs(testSaveImageDir, exist_ok=True)
