@@ -25,12 +25,13 @@ def get_facerender_data(coeff_path, pic_path, first_coeff_path, audio_path, batc
         source_image = source_image.transpose((2, 0, 1))
         ##测试下输出的啥
         source_image_ts = torch.FloatTensor(source_image).unsqueeze(0)
+        temp_source_image=source_image_ts
         source_image_ts = source_image_ts.repeat(batch_size, 1, 1, 1)
         source_image_ts = source_image_ts.to(device)
 
         if image_index <= 5:
             # 将张量转换为NumPy数组
-            array = source_image_ts.numpy()
+            array = temp_source_image.numpy()
             current_code_path = sys.argv[0]
             testSaveImageDir = os.path.join(current_code_path, 'testSaveImage')
             os.makedirs(testSaveImageDir, exist_ok=True)
